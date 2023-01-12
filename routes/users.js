@@ -120,16 +120,16 @@ router.post("/login", (req, res) => {
 router.get("/dashboard/:id", (req, res) => {
   if (req.session.user) {
     let sql = `SELECT * FROM 
-    hotels JOIN hotels_location
-    using(hotel_id)  
-    JOIN  hotels_contact
-    using(hotel_id)
-    JOIN hotel_images
-    using(hotel_id)
-    JOIN rooms using(hotel_id)
+    resorts JOIN resorts_location
+    using(resort_id)  
+    JOIN  resorts_contact
+    using(resort_id)
+    JOIN resort_images
+    using(resort_id)
+    JOIN rooms using(resort_id)
     JOIN rooms_category
     using(room_category_id)
-    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where hotel_id = hotels.hotel_id)
+    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where resort_id = resorts.resort_id)
     ORDER BY rating DESC;`;
     mySqlConnection.query(sql, (err, rows) => {
       if (err) {
@@ -160,16 +160,16 @@ router.get("/dashboard/:id", (req, res) => {
 router.get("/dashboard/:id/sort_price_asc", (req, res) => {
   if (req.session.user) {
     let sql = `SELECT * FROM 
-    hotels JOIN hotels_location
-    using(hotel_id)  
-    JOIN  hotels_contact
-    using(hotel_id)
-    JOIN hotel_images
-    using(hotel_id)
-    JOIN rooms using(hotel_id)
+    resorts JOIN resorts_location
+    using(resort_id)  
+    JOIN  resorts_contact
+    using(resort_id)
+    JOIN resort_images
+    using(resort_id)
+    JOIN rooms using(resort_id)
     JOIN rooms_category
     using(room_category_id)
-    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where hotel_id = hotels.hotel_id)
+    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where resort_id = resorts.resort_id)
     ORDER BY rooms.unit_price`;
     mySqlConnection.query(sql, (err, rows) => {
       if (err) {
@@ -200,16 +200,16 @@ router.get("/dashboard/:id/sort_price_asc", (req, res) => {
 router.get("/dashboard/:id/sort_price_dsc", (req, res) => {
   if (req.session.user) {
     let sql = `SELECT * FROM 
-    hotels JOIN hotels_location
-    using(hotel_id)  
-    JOIN  hotels_contact
-    using(hotel_id)
-    JOIN hotel_images
-    using(hotel_id)
-    JOIN rooms using(hotel_id)
+    resorts JOIN resorts_location
+    using(resort_id)  
+    JOIN  resorts_contact
+    using(resort_id)
+    JOIN resort_images
+    using(resort_id)
+    JOIN rooms using(resort_id)
     JOIN rooms_category
     using(room_category_id)
-    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where hotel_id = hotels.hotel_id)
+    WHERE rooms.unit_price = (SELECT MIN(unit_price) FROM  rooms where resort_id = resorts.resort_id)
     ORDER BY rooms.unit_price DESC`;
     mySqlConnection.query(sql, (err, rows) => {
       if (err) {
@@ -250,9 +250,9 @@ router.get("/profile/:id", (req, res) => {
             `SELECT *,rooms.unit_price*booking_items.quantity AS price
                                  FROM booking_items
                                  JOIN bookings using(booking_id)
-                                 JOIN hotels using(hotel_id)
+                                 JOIN resorts using(resort_id)
                                  JOIN rooms_category using(room_category_id)
-                                 JOIN rooms ON rooms.hotel_id = hotels.hotel_id AND rooms.room_category_id = rooms_category.room_category_id
+                                 JOIN rooms ON rooms.resort_id = resorts.resort_id AND rooms.room_category_id = rooms_category.room_category_id
                                  JOIN customers using(customer_id)
                                  WHERE customer_id = ?`,
             [req.params.id],
@@ -279,18 +279,18 @@ router.get("/profile/:id", (req, res) => {
 router.get('/hotel/:id1/:id2', (req, res) => {
   if (req.session.user) {
     mySqlConnection.query(
-      `SELECT * FROM hotels
-      JOIN hotels_contact
-      using(hotel_id)
-      JOIN hotels_location 
-      using(hotel_id)
-      JOIN hotel_images
-      using(hotel_id)
+      `SELECT * FROM resorts
+      JOIN resorts_contact
+      using(resort_id)
+      JOIN resorts_location 
+      using(resort_id)
+      JOIN resort_images
+      using(resort_id)
       JOIN rooms 
-      using(hotel_id)
+      using(resort_id)
       JOIN rooms_category
       using(room_category_id)
-      WHERE hotels.hotel_id = ?`,
+      WHERE resorts.resort_id = ?`,
       [parseInt(req.params.id1)],
       (err, rows) => {
         if (err) {
@@ -319,7 +319,7 @@ router.get('/hotel/:id1/:id2', (req, res) => {
 });
 
 
-// post request on hotels page
+// post request on resorts page
 router.post('/hotel/:id1/:id2', (req, res) => {
   if (req.session.user) {
     const {
@@ -334,7 +334,7 @@ router.post('/hotel/:id1/:id2', (req, res) => {
         msg: 'Please enter valid dates'
       });
     mySqlConnection.query(
-      `SELECT * FROM rooms JOIN rooms_category using(room_category_id) WHERE rooms.hotel_id = ? AND rooms_category.category_name = '${room_category}'`,
+      `SELECT * FROM rooms JOIN rooms_category using(room_category_id) WHERE rooms.resort_id = ? AND rooms_category.category_name = '${room_category}'`,
       [parseInt(req.params.id1)],
       (err, result) => {
         if (err) {
@@ -347,18 +347,18 @@ router.post('/hotel/:id1/:id2', (req, res) => {
           }
           if (errors1.length > 0) {
             mySqlConnection.query(
-              `SELECT * FROM hotels
-              JOIN hotels_contact
-              using(hotel_id)
-              JOIN hotels_location 
-              using(hotel_id)
-              JOIN hotel_images
-              using(hotel_id)
+              `SELECT * FROM resorts
+              JOIN resorts_contact
+              using(resort_id)
+              JOIN resorts_location 
+              using(resort_id)
+              JOIN resort_images
+              using(resort_id)
               JOIN rooms 
-              using(hotel_id)
+              using(resort_id)
               JOIN rooms_category
               using(room_category_id)
-              WHERE hotels.hotel_id = ?`,
+              WHERE resorts.resort_id = ?`,
               [parseInt(req.params.id1)],
               (err, rows) => {
                 if (err) {
@@ -383,7 +383,7 @@ router.post('/hotel/:id1/:id2', (req, res) => {
                 }
               });
           } else {
-            var query = `INSERT INTO bookings(hotel_id,customer_id,start_time,end_time) VALUES ?`;
+            var query = `INSERT INTO bookings(resort_id,customer_id,start_time,end_time) VALUES ?`;
             var values = [
               [req.params.id1, req.params.id2, start_date, end_date]
             ];
@@ -414,9 +414,9 @@ router.post('/hotel/:id1/:id2', (req, res) => {
                                 `SELECT *,rooms.unit_price*booking_items.quantity AS price
                               FROM booking_items
                               JOIN bookings using(booking_id)
-                              JOIN hotels using(hotel_id)
+                              JOIN resorts using(resort_id)
                               JOIN rooms_category using(room_category_id)
-                              JOIN rooms ON rooms.hotel_id = hotels.hotel_id AND rooms.room_category_id = rooms_category.room_category_id
+                              JOIN rooms ON rooms.resort_id = resorts.resort_id AND rooms.room_category_id = rooms_category.room_category_id
                               JOIN customers using(customer_id)
                               WHERE booking_id = ?`;
                               mySqlConnection.query(query, [last_id], (err, result2) => {
@@ -426,7 +426,7 @@ router.post('/hotel/:id1/:id2', (req, res) => {
                                   res.render('success', {
                                     rows: result2[0]
                                   });
-                                  mySqlConnection.query(`UPDATE rooms SET available_quantity = available_quantity - ? WHERE (hotel_id = ${req.params.id1} AND room_category_id = ?)`, [quantity, category_id], (err) => {
+                                  mySqlConnection.query(`UPDATE rooms SET available_quantity = available_quantity - ? WHERE (resort_id = ${req.params.id1} AND room_category_id = ?)`, [quantity, category_id], (err) => {
                                     if (err) {
                                       res.status(500).send(err);
                                     }
@@ -472,16 +472,62 @@ router.get("/hotelDelete/:id1/:id2", (req, res) => {
         else {
           customer = result[0];
           mySqlConnection.query(
-            `delete from bookings WHERE customer_id = ? and hotel_id = ?`,
+            `delete from bookings WHERE customer_id = ? and resort_id = ?`,
             [req.params.id2, req.params.id1],
             (err, rows) => {
               if (err) {
                 res.status(500).send(err);
               } else {
-                res.status(200).json({success : true})
+                res.render('deleteSuccess');
+                
               }
             });
         }
+      });
+  } else {
+    res.status(400);
+    res.redirect('/users/login?login+first');
+  }
+});
+
+router.get('/hotelUpdate/:id1/:id2', (req, res) => {
+  if (req.session.user) {
+    mySqlConnection.query(
+      "SELECT start_time, end_time FROM bookings WHERE customer_id = ? and resort_id = ?",[req.params.id2, req.params.id1],
+      (err, result) => {
+        if(err)
+          res.status(500).send(err);
+          else {
+            const resort = result[0]
+            return res.render('updateForm', { customer_id: req.params.id2, hotel_id: req.params.id1, resort: resort })
+          }
+      });
+  } else {
+    res.status(400);
+    res.redirect('/users/login?login+first');
+  }
+})
+
+router.post("/hotelUpdate/:id1/:id2",(req, res) => {
+  if (req.session.user) {
+    mySqlConnection.query(
+      "SELECT * FROM customers WHERE customer_id = ?",[req.params.id2],
+      (err, result) => {
+        if(err)
+          res.status(500).send(err);
+          else {
+            customer = result[0];
+            mySqlConnection.query(
+              'UPDATE bookings SET start_time=?,end_time=? WHERE customer_id=? and resort_id=?',
+              [req.body.start_date, req.body.end_date, req.params.id2, req.params.id1],
+              (err, rows) => {
+                if (err) {
+                  res.status(500).send(err);
+                } else {
+                  res.redirect(`/users/profile/${req.params.id2}`);
+                }
+              });
+          }
       });
   } else {
     res.status(400);

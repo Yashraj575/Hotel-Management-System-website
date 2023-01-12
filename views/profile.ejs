@@ -29,15 +29,15 @@
         <% bookings.forEach((item) => { %>
         <div class="row">
             <tr>
-                <td><%= item.hotel_name %> </td>
+                <td><%= item.resort_name %> </td>
                 <td><%= item.start_time%></td>
                 <td><%= item.end_time%></td>
                 <td><%= item.category_name%></td>
                 <td><%= item.quantity%></td>
                 <td><%= item.price%></td>
-                <td><button onclick="location.href = '/users/hotelUpdate/<%= item.hotel_id %>/<%=customer.customer_id%>';">
+                <td><button onclick="location.href = '/users/hotelUpdate/<%= item.resort_id %>/<%=customer.customer_id%>';">
                     Update</button></td>
-                <td><button onclick="location.href = '/users/hotelDelete/<%= item.hotel_id %>/<%=customer.customer_id%>';">
+                <td><button onclick="location.href = '/users/hotelDelete/<%= item.resort_id %>/<%=customer.customer_id%>';">
                     Delete</button></td>
             </tr>
         </div>

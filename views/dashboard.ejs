@@ -20,7 +20,7 @@
     <% rows.forEach((item) => { %>
     <div class="hotel">
         <img src="/images/<%= item.image_1%>" width="295px" height="185px">
-        <h1><%= item.hotel_name %></h1>
+        <h1><%= item.resort_name %></h1>
         <br><br>
         <h3><%= item.address %>, <%= item.city %></h3>
         <br><br>
@@ -29,7 +29,7 @@
         <h3>Contact <br>Telephone Number: <%= item.telephone_no%> <br> Mobile Number: <%= item.mobile_no%></h4>
             <br>
             <p>Rooms Starting At Rs. <%= item.unit_price%></p>
-            <button onclick="location.href = '/users/hotel/<%= item.hotel_id %>/<%=customer.customer_id%>';">Book
+            <button onclick="location.href = '/users/hotel/<%= item.resort_id %>/<%=customer.customer_id%>';">Book
                 Now!</button>
             <br><br><br><br>
             <hr>

@@ -1,0 +1,16 @@
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Hotel.me</title>
+<link rel="stylesheet" href="/css/register_style.css">
+<section class="container"></section>
+
+<div class="Hotel Update" style="background-color: white, 'text-align: center'" >
+  <img src= /images/logo.png> <h1>Resort Update</h1>
+  <form method="post" action="/users/hotelUpdate/<%= hotel_id %>/<%= customer_id %>">
+    Start Date:
+    <input type="date" name="start_date" required> 
+    End Date:
+    <input type="date" name="end_date" required></p>
+    <p class="submit"><input type="submit" name="submit" value="Update" required></p>
+  </form>
+</div>

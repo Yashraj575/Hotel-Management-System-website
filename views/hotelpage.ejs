@@ -11,7 +11,7 @@
 <div class="info">
     <img src="/images/<%= rows[0].image_1%>" width="295px" height="185px">
     <br> <br>
-    <h1><%= rows[0].hotel_name%></h1>
+    <h1><%= rows[0].resort_name%></h1>
     <br>
     <h3><%= rows[0].address %>, <%= rows[0].city %></h3>
     <br>
@@ -35,7 +35,7 @@
 </div>
 <div class="booking">
     <h1>Book Here</h1>
-    <form method="post" action="/users/hotel/<%= rows[0].hotel_id %>/<%= customer.customer_id%>">
+    <form method="post" action="/users/hotel/<%= rows[0].resort_id %>/<%= customer.customer_id%>">
         <p> Room Type:
             <select name="room_category">
                 <% rows.forEach(item => { %>
