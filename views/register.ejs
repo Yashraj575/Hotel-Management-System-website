@@ -6,6 +6,11 @@
 
   <div class="login">
     <img src= /images/logo.png> <h1>Register</h1>
+    <% errors.forEach((error) => { %>
+      <div class="row" style="color: red">
+        <%= error %>
+      </div>
+      <% });%>
     <form method="post" action="/users/register">
       <p><input type="text" name="fname" placeholder="First Name" required></p>
       <p><input type="text" name="lname" placeholder="Last Name" required></p>

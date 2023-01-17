@@ -8,7 +8,7 @@ const mySqlConnection = require("../db/db");
 router.get("/register", (req, res) => {
   if (!req.session.user) {
     res.statusCode = 200
-    res.render("register")
+    res.render("register", { errors: [] })
   } else {
     res.status = 401;
     res.redirect("/dashboard?logout+first");
@@ -27,13 +27,15 @@ router.post("/register", (req, res) => {
   } = req.body;
   let errors = [];
   if (password != password2) {
-    errors.push({
-      msg: "Passwords do not match"
+    errors.push("Passwords do not match")
+    return res.render("register", {
+      errors
     })
   }
   if (password.length < 6) {
-    errors.push({
-      msg: "Password must be at least 6 characters"
+    errors.push("Password must be at least 6 characters")
+    return res.render("register", {
+      errors
     })
   }
   mySqlConnection.query(
@@ -44,10 +46,12 @@ router.post("/register", (req, res) => {
         res.status = 500;
         res.send(err);
       }
-      if (rows.length)
-        errors.push({
-          msg: "Email already exists"
+      if (rows.length){
+        errors.push("Email already exists")
+        return res.render("register", {
+          errors
         })
+      }
       if (errors.length > 0) {
         res.render('register', {
           errors,
@@ -65,11 +69,14 @@ router.post("/register", (req, res) => {
         mySqlConnection.query(sql, [values], err => {
           if (err) {
             res.status = 500;
-            res.send(err);
+            errors.push("Server Error")
+            return res.render("register", {
+              errors
+            })
           }
         })
         res.render("login", {
-          msg: "Registered successfully"
+          errors: ["Registered successfully.. Now LogIn"]
         })
       }
     },
@@ -80,7 +87,7 @@ router.post("/register", (req, res) => {
 router.get("/login", (req, res) => {
   if (!req.session.user) {
     res.statusCode = 200
-    res.render("login")
+    res.render("login", {errors: []})
   } else {
     res.status = 401
     res.redirect("/dashboard?logout+first")
@@ -104,12 +111,11 @@ router.post("/login", (req, res) => {
           req.session.user = customer;
           res.redirect(`dashboard/${customer.customer_id}`);
         } else {
-          res.render('login');
+          res.render('login', {errors: ["Entered credentials do not match"]});
         }
       } else {
         res.render('login', {
-          error: "This EmailId does not exists"
-        });
+          errors: ["Entered credentials do not match"]});
       }
     },
   )

@@ -5,6 +5,11 @@
   <section class="container"></section>
   <div class="login">
     <img src= /images/logo.png> <h1>Login</h1>
+    <% errors.forEach((error) => { %>
+      <div class="row" style="color: red">
+        <%= error %>
+      </div>
+      <% });%>
     <form method="post" action="/users/login">
       <p><input type="email" name="email" placeholder="Email"></p>
       <p><input type="password" name="password" placeholder="Password"></p>
