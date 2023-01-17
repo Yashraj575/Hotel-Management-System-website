@@ -499,14 +499,14 @@ router.get('/hotelUpdate/:id1/:id2', (req, res) => {
           res.status(500).send(err);
           else {
             const resort = result[0]
-            return res.render('updateForm', { customer_id: req.params.id2, hotel_id: req.params.id1, resort: resort })
+            return res.render('updateForm', { customer_id: req.params.id2, resort_id: req.params.id1, resort: resort })
           }
       });
   } else {
     res.status(400);
     res.redirect('/users/login?login+first');
   }
-})
+}) 
 
 router.post("/hotelUpdate/:id1/:id2",(req, res) => {
   if (req.session.user) {
