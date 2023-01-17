@@ -115,7 +115,7 @@ router.post("/login", (req, res) => {
         }
       } else {
         res.render('login', {
-          errors: ["Entered credentials do not match"]});
+          errors: ["Entered credentials do not match"]}); 
       }
     },
   )
