@@ -38,11 +38,11 @@
     <form method="post" action="/users/hotel/<%= rows[0].resort_id %>/<%= customer.customer_id%>">
         <p> Room Type:
             <select name="room_category">
-                <% rows.forEach(item => { %>
+                <% rows.forEach( item => { %>
                 <option value="<%= item.category_name %>"><%= item.category_name%></option>
                 <% }); %>
             </select>
-            No of Rooms: <input type="text" name="quantity" placeholder="Number of rooms" required></p>
+            No of Rooms: <input type="number" min="1" max="5" name="quantity" placeholder="Number of rooms" required></p>
         Start Date:
         <input type="date" name="start_date" required> End Date:<input type="date" name="end_date" required></p>
         <br>

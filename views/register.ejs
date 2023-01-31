@@ -12,10 +12,10 @@
       </div>
       <% });%>
     <form method="post" action="/users/register">
-      <p><input type="text" name="fname" placeholder="First Name" required></p>
-      <p><input type="text" name="lname" placeholder="Last Name" required></p>
-      <p><input type="email" name="email" placeholder="Email" required></p>
-      <p><input type="text" name="mobile" placeholder="Mobile" required></p>
+      <p><input type="text" name="fname"  placeholder="First Name" title="please enter only alphabets" pattern="[A-Za-z]+"required></p>
+      <p><input type="text" name="lname" placeholder="Last Name"  title="Enter space seperated middle name and lastname or enter any one" pattern="[A-Za-z]+ {0,1}[A-Za-z]*" required></p>
+      <p><input type="email" name="email" placeholder="Email" pattern="[a-z]+[-0-9a-zA-Z.+_]*@[a-zA-Z.+_]+\.[a-zA-Z]{2,4}" required></p>
+      <p><input type="text" name="mobile" placeholder="Mobile" title="please enter 10 digit number and dont include 0 as first digit " pattern="[1-9][0-9]{9}" required></p>
       <p><input type="password" name="password" placeholder="Password" required></p>
       <p><input type="password" name="password2" placeholder="Confirm Password" required></p>
       <p class="submit"><input type="submit" name="submit" value="Register" required></p>

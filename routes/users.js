@@ -43,8 +43,10 @@ router.post("/register", (req, res) => {
     [email],
     (err, rows) => {
       if (err) {
-        res.status = 500;
-        res.send(err);
+        errors.push("Server Error")
+        return res.render("register", {
+          errors
+        })
       }
       if (rows.length){
         errors.push("Email already exists")
@@ -69,14 +71,15 @@ router.post("/register", (req, res) => {
         mySqlConnection.query(sql, [values], err => {
           if (err) {
             res.status = 500;
-            errors.push("Server Error")
+            errors.push(err.message)
             return res.render("register", {
               errors
             })
           }
-        })
-        res.render("login", {
-          errors: ["Registered successfully.. Now LogIn"]
+          
+          res.render("login", {
+            errors: ["Registered successfully.. Now LogIn"]
+          })
         })
       }
     },
